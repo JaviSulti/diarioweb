@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" lang="en">
+    <head>
+        <title>Formulario de registro</title>
+        <link rel="stylesheet" href="registro.css">
+        <link href="https://fonts.googleapis.com/css?family=Roboto:300,400,500,700" rel="stylesheet">
+        <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.4.1/css/all.css" integrity="sha384-5sAR7xN1Nv6T6+dT2mhtzEpVJvfS3NScPQTrOxhwjIuvcA67KV2R5Jz6kr4abQsz" crossorigin="anonymous">
+        <style>
+
+        </style>
+    </head>
+    <body>
+        <div class="main-block">
+            <h1>REGISTRATE</h1>
+            <form th:action="@{/registro}" method="POST">
+                <!--<hr>
+                <label for="name">Elije el rol</label>
+                <select name="dog-names" id="name">
+                    <option value="lector">Lector</option>
+                    <option value="periodista">Periodista</option>
+                </select>
+                <hr>-->
+                <label id="icon" for="name"><i class="fas fa-user"></i></label>
+                <input type="text" name="nombreUsuario" id="name" placeholder="Nombre del/a Lector/a" required th:value="${nombreUsuario}"/>
+                <label id="icon" for="name"><i class="fas fa-envelope"></i></label>
+                <input type="text" name="email" id="name" placeholder="Email" required th:value="${email}"/>
+                <label id="icon" for="name"><i class="fas fa-unlock-alt"></i></label>
+                <input type="password" name="password" id="name" placeholder="Contraseña" required />
+                <label id="icon" for="name"><i class="fas fa-unlock-alt"></i></label>
+                <input type="password" name="password2" id="name" placeholder="Repetir Contraseña" />
+                <div class="btn-block">
+                    <p>Powered by W3Docs</p>
+                    <button type="submit" href="/">Registrarme</button>
+                </div>
+                <div id="error" th:if="${error!= null}" class="card text-white bg-danger mb-3 mensajeError" >
+                    <div class="card-body">
+                        <h5 class="card-title">Error</h5>
+                        <p class="card-text" th:text="${error}"></p>
+                    </div>
+                </div>
+                <div id="exito" th:if="${exito != null}" class="card text-white bg-success mb-3 mt-3 mensajeExito" >
+                    <div class="card-body">
+                        <h5 class="card-title">Exito!</h5>
+                        <p class="card-text" th:text="${exito}"></p>
+                    </div>    
+                </div>
+            </form>
+
+        </div>
+    </body>
+</html>

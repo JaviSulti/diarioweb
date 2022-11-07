@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" lang="en">
+    <head>
+        <title>Formulario de registro</title>
+        <link rel="stylesheet" href="login.css">
+        <link href="https://fonts.googleapis.com/css?family=Roboto:300,400,500,700" rel="stylesheet">
+        <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.4.1/css/all.css" integrity="sha384-5sAR7xN1Nv6T6+dT2mhtzEpVJvfS3NScPQTrOxhwjIuvcA67KV2R5Jz6kr4abQsz" crossorigin="anonymous">
+        <style>
+           
+        </style>
+    </head>
+    <body>
+        <div class="main-block">
+            <h1>INGRESA</h1>
+            <form th:action="@{/logincheck}" method="POST">
+                <label id="icon" for="name"><i class="fas fa-user"></i></label>
+                <input type="text" name="nombreUsuario" id="name" placeholder="Nombre de Usuario" required/>
+                <label id="icon" for="name"><i class="fas fa-user"></i></label>
+                <input type="text" name="email" id="name" placeholder="Email" required/>
+                <label id="icon" for="name"><i class="fas fa-unlock-alt"></i></label>
+                <input type="password" name="password" id="name" placeholder="Contraseña" required/>
+                <div class="btn-block">
+                    <p>Powered by W3Docs</p>
+                    <button type="submit">Ingresar</button>
+                    <hr>
+                </div>
+                <div align="center">
+                    <a class="btn btn-link btn-sm" href="http://localhost:8080/" role="button">Volver</a>
+                </div>
+            </form>
+        </div>
+        <div id="error" th:if="${error!= null}" class="card text-white bg-danger mb-3 mensajeError" >
+            <div class="card-body">
+                <h5 class="card-title">Error</h5>
+                <p class="card-text" th:text="${error}"></p>
+            </div>
+        </div>
+        <div id="exito" th:if="${exito != null}" class="card text-white bg-success mb-3 mt-3 mensajeExito" >
+            <div class="card-body">
+                <h5 class="card-title">Exito!</h5>
+                <p class="card-text" th:text="${exito}"></p>
+            </div>    
+        </div>            
+    </body>
+</html>
