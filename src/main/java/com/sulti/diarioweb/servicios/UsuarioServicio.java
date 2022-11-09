@@ -11,6 +11,7 @@ import org.springframework.stereotype.Service;
 import com.sulti.diarioweb.excepciones.MiExcepcion;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 import javax.servlet.http.HttpSession;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
@@ -81,5 +82,33 @@ public class UsuarioServicio implements UserDetailsService{
             return null;
         }
     }
-    
+
+    public List<Usuario> listarUsuarios() {
+        List <Usuario> usuarios = new ArrayList();
+        usuarios = usuarioRepositorio.findAll();
+        return usuarios;
+    }
+
+    public Usuario getoOne(Long id) {
+        return usuarioRepositorio.getOne(id);
+    }
+
+    public void modificarNombre(Long id, String nombreUsuario) throws MiExcepcion {
+
+        validar(nombreUsuario);
+        Optional<Usuario> respuesta = usuarioRepositorio.findById(id);
+
+        if (respuesta.isPresent()) {
+
+            Usuario usuario = respuesta.get();
+            usuario.setNombreUsuario(nombreUsuario);
+            usuarioRepositorio.save(usuario);
+        }
+    }
+
+    private void validar(String nombreUsuario) throws MiExcepcion {
+        if (nombreUsuario.isEmpty() || nombreUsuario == null) {
+            throw new MiExcepcion("El titulo no puede ser nulo o estar vacio.");
+        }
+    }
 }

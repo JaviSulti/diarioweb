@@ -1,10 +1,10 @@
 <!DOCTYPE html>
-<html xmlns:th="http://www.thymeleaf.org" xmlns:sec="http://www.thymeleaf.org/extras/spring-security"lang="en">
+<html xmlns:th="http://www.thymeleaf.org" lang="en">
     <head>
         <meta charset="UTF-8">
         <meta http-equiv="X-UA-Compatible" content="IE=edge">
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
-        <title>Inicio</title>
+        <title>Lectores</title>
 
         <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/css/bootstrap.min.css" rel="stylesheet" 
               integrity="sha384-1BmE4kWBq78iYhFldvKuhfTAU6auU8tT94WrHftjDbrCEXSU1oBoqyl2QvZ6jIW3" crossorigin="anonymous">
@@ -15,6 +15,7 @@
             <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
                 <span class="navbar-toggler-icon"></span>
             </button>
+
             <div class="collapse navbar-collapse" id="navbarSupportedContent">
                 <ul class="navbar-nav mr-auto">
                     <li class="nav-item dropdown">
@@ -23,36 +24,14 @@
                         </a>
                         <ul class="dropdown-menu" aria-labelledby="navbarDropdown">
                             <li><a class="dropdown-item" href="/logout" >Cerrar Sesión</a></li>
-                            <!--
-                            <li><a class="dropdown-item" th:href="#" >Editar Perfil</a></li>-->
-                        </ul>
-                        
-                    </li>
-                    <li class="nav-item dropdown">
-                        <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
-                            Noticias
-                        </a>
-                        <ul class="dropdown-menu" aria-labelledby="navbarDropdown">
-                            <li><a class="dropdown-item" href="http://localhost:8080/noticia/todasNoticias" >Ver noticias</a></li>
-                            <li><a class="dropdown-item" href="http://localhost:8080/noticia/registrarNoticia" >Crear Noticia</a></li>
-                        </ul>
-
-                    </li>
-
-                    <li class="nav-item dropdown" sec:authorize="hasRole('ADMINISTRADOR')">
-                        <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
-                            Usuarios
-                        </a>
-                        <ul class="dropdown-menu" aria-labelledby="navbarDropdown">
-                            <li><a class="dropdown-item" href="/admin/lectores" >Lectores</a></li>
-                            <li><a class="dropdown-item" href="/admin/periodistas" >Periodistas</a></li>
                         </ul>
                         <!--<ul class="dropdown-menu" aria-labelledby="navbarDropdown">
                             <li><a class="dropdown-item" th:href="#" >Editar Perfil</a></li>
                         </ul> -->
                     </li>
-
-
+                    <li class="nav-item active">
+                        <a class="nav-link" href="http://localhost:8080/admin/dashboard">Volver</a>
+                    </li>
                 </ul>
             </div>
         </nav>
@@ -73,34 +52,45 @@
         <table class="table table-hover" enctype="multipart/form-data">
             <thead>
                 <tr class="table table-dark">
-                    <th scope="col">Identificador</th>
-                    <th scope="col">Alta</th>
-                    <th scope="col">Titulo</th>
-                    <th scope="col">Cuerpo</th>
-                    <th scope="col">Imagen</th>
-                    <th scope="col"></th>
-                    <th scope="col" sec:authorize="hasRole('ADMINISTRADOR')"></th>
+                    <th scope="col">Id</th>
+                    <th scope="col">Nombre</th>
+                    <th scope="col">Email</th>
+                    <th scope="col">Fecha de Alta</th>
+                    <th scope="col">Rol</th>
+                    <th scope="col">Estado</th>
                 </tr>
             </thead>
-            <tbody th:each="noticia : ${noticias}">
+            <tbody th:each="usuario : ${usuarios}">
                 <tr>
-                    <td scope="row" th:text="${noticia.identificador}"></td>
-                    <td th:text="${noticia.alta}"></td>
-                    <td th:text="${noticia.titulo}"></td>
-                    <td th:text="${noticia.cuerpo}"></td>
-                    <td  style="width: 25%">
-                        <div class="card-body" enctype="multipart/form-data">
-                            <img class="img-thumbnail rounded float-left"
-                                 th:src="@{'/uploads/' + ${noticia.foto}}" th:alt="${noticia.foto}"/>
+                    <td scope="row" th:text="${usuario.id}"></td>
+                    <td>
+                        <div th:text="${usuario.nombreUsuario}"></div>
+                        <button type="button" class="btn btn-success btn-sm" data-bs-toggle="modal" th:attr="data-bs-target='#exampleModal'+*{usuario.id}">
+                            Editar
+                        </button>
+                        <div class="modal fade" th:id="*{'exampleModal'+{usuario.id}}" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+                            <div class="modal-dialog" role="document">
+                                <div class="modal-content">
+                                    <div class="modal-body" >
+                                        Ingrese el nuevo nombre de usuario de <p th:text="${{usuario.nombreUsuario}}"></p>
+                                        <input type="text" id="ejemploNombre" name="nombreUsuario">
+                                    </div>
+                                    <div class="modal-footer">
+                                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancelar</button>
+                                        <a th:href="@{/admin/editarNombre/__${usuario.id}__}" class="btn btn-danger">Aceptar</a>
+                                    </div>
+                                </div>
+                            </div>
                         </div>
                     </td>
+                    <td th:text="${usuario.email}"></td>
+                    <td th:text="${usuario.fechaDeAlta}"></td>
+                    <td th:text="${usuario.rol}"></td>
+                    <td th:text="${usuario.activo}"></td>
                     <td>
-                        <a class="btn btn-success btn-sm" th:href="@{/noticia/editarNoticia/__${noticia.identificador}__}"><i class="fas fa-feather-alt"> </i> Editar </a>
+                        <a class="btn btn-success btn-sm" th:href="@{/admin/editarLector/__${usuario.id}__}"><i class="fas fa-feather-alt"> </i> Editar </a>
                     </td>
-                    <td sec:authorize="hasRole('ADMINISTRADOR')">
-                        <!--<a class="btn btn-danger btn-sm" th:href="@{/noticia/eliminarNoticia/__${noticia.identificador}__}"><i class="fas fa-feather-alt"> </i> Eliminar </a>
-                        <!--https://www.youtube.com/watch?v=29ENlVMuTHs&ab_channel=FrontendPaathshala -->
-                        <!--https://youtu.be/svG_bpr_1Yk-->
+                    <!--<td>
                         <button type="button" class="btn btn-danger btn-sm" data-bs-toggle="modal" th:attr="data-bs-target='#exampleModal'+*{noticia.identificador}">
                             Eliminar
                         </button>
@@ -120,7 +110,7 @@
                                 </div>
                             </div>
                         </div>
-                    </td>
+                    </td> -->
                 </tr>                
             </tbody>
         </table>

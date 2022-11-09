@@ -45,7 +45,6 @@ public class PortalControlador {
             modelo.put("email", email);
             return "registro.html";
         }
-
     }
 
     //Por aca van a acceder todos los usuarios que se han registrado.
@@ -68,7 +67,7 @@ public class PortalControlador {
         }
          */        
         
-        if (loqueado.getRol().toString().equals("ADMINISTRADOR")) {
+        if (loqueado.getRol().toString().equals("ADMINISTRADOR")||loqueado.getRol().toString().equals("PERIODISTA")) {
             return "redirect:/admin/dashboard";
         }
         
